@@ -4,14 +4,26 @@ services:
   server:
     container_name: server
     platform: linux/amd64
-    image: hxxn/omd:backend_ssl
+    image: hxxn/omd:server
     expose:
       - 8080
     ports:
       - 8080:8080
     restart: "always"
+    depends_on:
+      - redis
     env_file:
       - .env
+    networks:
+      - omd
+
+  redis:
+    container_name: redis
+    platform: linux/amd64
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
     networks:
       - omd
 
